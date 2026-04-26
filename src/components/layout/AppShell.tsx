@@ -17,9 +17,13 @@ export function AppShell({ children, active = "/" }: { children: React.ReactNode
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-white focus:px-3 focus:py-2 focus:shadow-2">Skip to content</a>
       <aside className="fixed left-0 top-0 z-30 hidden h-screen w-[240px] bg-brand-navy text-white md:block">
         <div className="flex h-full flex-col p-4">
-          <div className="mb-7 flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-lg bg-brand-teal font-semibold">PA</div>
-            <div><p className="text-sm font-semibold">Pure Advance</p><p className="text-xs text-white/65">Command Center</p></div>
+          <div className="mb-7 rounded-lg bg-black/30 p-3 ring-1 ring-white/10">
+            <img
+              src="/pure-advance-logo.png"
+              alt="Pure Advance"
+              className="h-auto w-full"
+            />
+            <p className="mt-2 text-xs text-white/65">Command Center</p>
           </div>
           <nav aria-label="Primary navigation" className="space-y-2">
             {navItems.map((item) => (
