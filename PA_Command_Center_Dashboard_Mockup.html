@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PA Command Center — CEO Dashboard</title>
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root {
+    /* Brand */
+    --pa-navy: #0B2545;
+    --pa-navy-2: #13315C;
+    --pa-teal: #1B998B;
+    --pa-gold: #C9A227;
+    --pa-bg: #F5F7FA;
+    --pa-surface: #FFFFFF;
+    --pa-border: #E3E8EF;
+    --pa-text: #0E1B2C;
+    --pa-text-muted: #5A6B7E;
+    --pa-text-faint: #8895A7;
+
+    /* Semantic */
+    --green: #1F9D55;
+    --green-bg: #E6F6EE;
+    --yellow: #C58E00;
+    --yellow-bg: #FFF6DA;
+    --red: #D14343;
+    --red-bg: #FBE6E6;
+    --blue: #2563EB;
+    --blue-bg: #E8F0FE;
+
+    /* Spacing scale (4-pt) */
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 16px;
+    --s-5: 24px;
+    --s-6: 32px;
+    --s-7: 48px;
+
+    /* Radius / shadow */
+    --r-sm: 6px;
+    --r-md: 10px;
+    --r-lg: 14px;
+    --shadow-1: 0 1px 2px rgba(13, 27, 44, 0.06), 0 1px 3px rgba(13, 27, 44, 0.04);
+    --shadow-2: 0 4px 12px rgba(13, 27, 44, 0.08);
+
+    /* Type */
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-num: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--pa-bg);
+    color: var(--pa-text);
+    -webkit-font-smoothing: antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* ============ APP SHELL ============ */
+  .app {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    min-height: 100vh;
+  }
+  .sidebar {
+    background: var(--pa-navy);
+    color: #fff;
+    padding: var(--s-5) var(--s-4);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-2);
+    margin-bottom: var(--s-6);
+  }
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--pa-teal);
+    border-radius: var(--r-sm);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+  }
+  .brand-text {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+  .brand-sub {
+    font-size: 11px;
+    opacity: 0.65;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .nav { display: flex; flex-direction: column; gap: 2px; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-3);
+    color: rgba(255,255,255,0.7);
+    font-weight: 500;
+    border-radius: var(--r-sm);
+    text-align: left;
+    width: 100%;
+    transition: background 0.15s;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+  .nav-item.active { background: var(--pa-navy-2); color: #fff; }
+  .nav-icon {
+    width: 18px; height: 18px;
+    display: inline-grid; place-items: center;
+    font-size: 14px;
+  }
+  .nav-section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.4);
+    padding: var(--s-5) var(--s-3) var(--s-2);
+  }
+
+  /* ============ MAIN ============ */
+  .main { padding: var(--s-5) var(--s-6); max-width: 1400px; }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--s-5);
+  }
+  .greeting h1 {
+    margin: 0 0 4px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .greeting p { margin: 0; color: var(--pa-text-muted); font-size: 13px; }
+  .topbar-actions { display: flex; gap: var(--s-2); align-items: center; }
+  .btn {
+    padding: 8px 14px;
+    border-radius: var(--r-sm);
+    font-weight: 500;
+    font-size: 13px;
+    border: 1px solid var(--pa-border);
+    background: #fff;
+    color: var(--pa-text);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:hover { background: var(--pa-bg); }
+  .btn-primary { background: var(--pa-navy); color: #fff; border-color: var(--pa-navy); }
+  .btn-primary:hover { background: var(--pa-navy-2); }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--pa-teal), var(--pa-navy));
+    color: #fff;
+    display: grid; place-items: center;
+    font-weight: 600; font-size: 12px;
+  }
+
+  /* ============ ALERTS STRIP ============ */
+  .alerts-strip {
+    display: flex; gap: var(--s-3);
+    margin-bottom: var(--s-5);
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .alert-pill {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .alert-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .alert-pill.red { background: var(--red-bg); color: var(--red); border-color: rgba(209,67,67,0.2); }
+  .alert-pill.red .dot { background: var(--red); }
+  .alert-pill.yellow { background: var(--yellow-bg); color: var(--yellow); border-color: rgba(197,142,0,0.25); }
+  .alert-pill.yellow .dot { background: var(--yellow); }
+  .alert-pill.green { background: var(--green-bg); color: var(--green); border-color: rgba(31,157,85,0.2); }
+  .alert-pill.green .dot { background: var(--green); }
+
+  /* ============ GRID ============ */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--s-4);
+  }
+  .col-3 { grid-column: span 3; }
+  .col-4 { grid-column: span 4; }
+  .col-6 { grid-column: span 6; }
+  .col-8 { grid-column: span 8; }
+  .col-12 { grid-column: span 12; }
+
+  /* ============ CARDS ============ */
+  .card {
+    background: var(--pa-surface);
+    border: 1px solid var(--pa-border);
+    border-radius: var(--r-md);
+    padding: var(--s-4);
+    box-shadow: var(--shadow-1);
+  }
+  .card-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: var(--s-3);
+  }
+  .card-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--pa-text-muted);
+    font-weight: 600;
+  }
+  .card-action {
+    font-size: 12px; color: var(--pa-text-muted);
+    text-decoration: none;
+  }
+
+  /* ============ KPI CARDS ============ */
+  .kpi-value {
+    font-family: var(--font-num);
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--pa-text);
+    line-height: 1.1;
+  }
+  .kpi-currency {
+    font-size: 13px;
+    color: var(--pa-text-muted);
+    margin-left: 4px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+  .kpi-meta {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: var(--s-3);
+    font-size: 12px;
+    color: var(--pa-text-muted);
+  }
+  .delta {
+    display: inline-flex; align-items: center;
+    padding: 2px 6px; border-radius: 4px;
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .delta.up { background: var(--green-bg); color: var(--green); }
+  .delta.down { background: var(--red-bg); color: var(--red); }
+  .delta.flat { background: #EEF2F6; color: var(--pa-text-muted); }
+  .sparkline { margin-top: var(--s-3); height: 32px; width: 100%; }
+
+  /* ============ SECTION HEADER ============ */
+  .section-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: var(--s-6) 0 var(--s-3);
+  }
+  .section-head h2 {
+    margin: 0; font-size: 16px; font-weight: 600;
+  }
+  .section-head .crumb {
+    font-size: 12px; color: var(--pa-text-muted);
+  }
+
+  /* ============ PRODUCT TILES ============ */
+  .platform-block {
+    background: var(--pa-surface);
+    border: 1px solid var(--pa-border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+  .platform-head {
+    padding: var(--s-3) var(--s-4);
+    background: linear-gradient(180deg, #F8FAFC 0%, #F2F5F8 100%);
+    border-bottom: 1px solid var(--pa-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .platform-name {
+    font-weight: 600;
+    display: flex; align-items: center; gap: var(--s-2);
+  }
+  .platform-icon {
+    width: 22px; height: 22px;
+    border-radius: var(--r-sm);
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700; color: #fff;
+  }
+  .icon-bio { background: #16A34A; }
+  .icon-med { background: #2563EB; }
+  .icon-aca { background: #C58E00; }
+
+  .product-row {
+    padding: var(--s-3) var(--s-4);
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 0.7fr;
+    align-items: center;
+    gap: var(--s-3);
+    border-top: 1px solid var(--pa-border);
+    font-size: 13px;
+  }
+  .product-row:first-of-type { border-top: none; }
+  .product-name { font-weight: 600; }
+  .product-sub { font-size: 11px; color: var(--pa-text-muted); margin-top: 2px; }
+  .stage-pill {
+    display: inline-flex; align-items: center;
+    padding: 3px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 600;
+    border: 1px solid transparent;
+  }
+  .stage-pill.market { background: var(--green-bg); color: var(--green); }
+  .stage-pill.mfg { background: var(--blue-bg); color: var(--blue); }
+  .stage-pill.reg { background: var(--yellow-bg); color: var(--yellow); }
+  .stage-pill.dd { background: #F1F4F8; color: var(--pa-text-muted); }
+
+  .metric-pair { font-family: var(--font-num); font-size: 14px; font-weight: 600; }
+  .metric-label { font-family: var(--font-sans); font-size: 11px; color: var(--pa-text-muted); font-weight: 500; }
+  .stock-bar {
+    height: 4px; background: #EEF2F6; border-radius: 2px; margin-top: 4px;
+    overflow: hidden;
+  }
+  .stock-bar > span { display: block; height: 100%; background: var(--green); }
+  .stock-bar.low > span { background: var(--red); }
+
+  .row-action {
+    text-align: right;
+    color: var(--pa-text-muted);
+    font-size: 12px;
+  }
+  .row-action button {
+    color: var(--pa-text-muted);
+    padding: 4px 8px;
+    border-radius: var(--r-sm);
+  }
+  .row-action button:hover { background: var(--pa-bg); color: var(--pa-text); }
+
+  /* ============ TASKS LIST ============ */
+  .task-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-2) 0;
+    border-top: 1px solid var(--pa-border);
+    font-size: 13px;
+  }
+  .task-row:first-of-type { border-top: none; }
+  .who-chip {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, #94a3b8, #475569);
+    color: #fff;
+    display: grid; place-items: center;
+    font-weight: 600; font-size: 11px;
+  }
+  .task-text { font-weight: 500; }
+  .task-meta { font-size: 11px; color: var(--pa-text-muted); margin-top: 2px; }
+  .due-pill {
+    font-size: 11px; font-weight: 600;
+    padding: 2px 6px; border-radius: 4px;
+  }
+  .due-pill.overdue { background: var(--red-bg); color: var(--red); }
+  .due-pill.today { background: var(--yellow-bg); color: var(--yellow); }
+  .due-pill.soon { background: var(--blue-bg); color: var(--blue); }
+  .priority-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .pri-crit { background: var(--red); }
+  .pri-high { background: var(--yellow); }
+  .pri-norm { background: #94A3B8; }
+
+  /* ============ MOBILE ============ */
+  @media (max-width: 980px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: var(--s-4); }
+    .col-3, .col-4, .col-6, .col-8 { grid-column: span 12; }
+    .product-row { grid-template-columns: 1fr 1fr; }
+    .product-row .row-action { grid-column: span 2; text-align: left; }
+  }
+
+  /* Footer caption (mockup-only) */
+  .mockup-caption {
+    margin-top: var(--s-7);
+    padding: var(--s-4);
+    background: #EEF2F6;
+    border-radius: var(--r-md);
+    font-size: 12px;
+    color: var(--pa-text-muted);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">PA</div>
+      <div>
+        <div class="brand-text">Pure Advance</div>
+        <div class="brand-sub">Command Center</div>
+      </div>
+    </div>
+
+    <div class="nav-section-label">Overview</div>
+    <nav class="nav">
+      <button class="nav-item active"><span class="nav-icon">▣</span> Dashboard</button>
+      <button class="nav-item"><span class="nav-icon">⚑</span> Alerts <span style="margin-left:auto;font-size:11px;background:var(--red);padding:1px 6px;border-radius:10px;color:#fff;">3</span></button>
+    </nav>
+
+    <div class="nav-section-label">Modules</div>
+    <nav class="nav">
+      <button class="nav-item"><span class="nav-icon">◉</span> Products</button>
+      <button class="nav-item"><span class="nav-icon">✓</span> Tasks &amp; Team</button>
+      <button class="nav-item"><span class="nav-icon">◈</span> Partnerships</button>
+      <button class="nav-item"><span class="nav-icon">$</span> Financials</button>
+      <button class="nav-item"><span class="nav-icon">§</span> Regulatory</button>
+      <button class="nav-item"><span class="nav-icon">⚙</span> Access &amp; Roles</button>
+    </nav>
+
+    <div class="nav-section-label">Pinned</div>
+    <nav class="nav">
+      <button class="nav-item"><span class="nav-icon">↳</span> Royalty Calculator</button>
+      <button class="nav-item"><span class="nav-icon">↳</span> SAFE / Cap Table</button>
+    </nav>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="greeting">
+        <h1>Good morning, Dr. Sultan</h1>
+        <p>Sunday, 26 April 2026 · 3 items need your attention today</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn">+ New task</button>
+        <button class="btn btn-primary">Weekly review</button>
+        <div class="avatar" title="Sultan Al-Hayyani">SA</div>
+      </div>
+    </header>
+
+    <!-- ALERTS STRIP -->
+    <div class="alerts-strip">
+      <span class="alert-pill red"><span class="dot"></span> Coolvex stock below 500 units (412 left)</span>
+      <span class="alert-pill red"><span class="dot"></span> SFDA Coolvex CTD response — 4 days overdue</span>
+      <span class="alert-pill yellow"><span class="dot"></span> INSEBT — Delta no update in 9 days</span>
+      <span class="alert-pill yellow"><span class="dot"></span> Faisal royalty April — not yet calculated</span>
+      <span class="alert-pill green"><span class="dot"></span> April revenue on track (87% of target)</span>
+    </div>
+
+    <!-- 1.1 FINANCIAL PULSE -->
+    <div class="grid">
+      <div class="card col-3">
+        <div class="card-head">
+          <div class="card-title">Revenue · MTD</div>
+          <span class="delta up">▲ 12%</span>
+        </div>
+        <div class="kpi-value">487,200 <span class="kpi-currency">SAR</span></div>
+        <div class="kpi-meta">vs 434,800 last month</div>
+        <svg class="sparkline" viewBox="0 0 200 32" preserveAspectRatio="none">
+          <polyline fill="none" stroke="var(--pa-teal)" stroke-width="2"
+            points="0,24 20,22 40,18 60,20 80,15 100,12 120,14 140,10 160,8 180,6 200,5"/>
+        </svg>
+      </div>
+
+      <div class="card col-3">
+        <div class="card-head">
+          <div class="card-title">Net profit · MTD</div>
+          <span class="delta up">▲ 8%</span>
+        </div>
+        <div class="kpi-value">189,400 <span class="kpi-currency">SAR</span></div>
+        <div class="kpi-meta">Margin <strong style="color:var(--pa-text);">38.9%</strong></div>
+        <svg class="sparkline" viewBox="0 0 200 32" preserveAspectRatio="none">
+          <polyline fill="none" stroke="var(--pa-teal)" stroke-width="2"
+            points="0,22 20,24 40,18 60,20 80,16 100,14 120,12 140,14 160,10 180,8 200,7"/>
+        </svg>
+      </div>
+
+      <div class="card col-3">
+        <div class="card-head">
+          <div class="card-title">Cash position</div>
+          <span class="delta flat">— burn 215k/mo</span>
+        </div>
+        <div class="kpi-value">1,842,500 <span class="kpi-currency">SAR</span></div>
+        <div class="kpi-meta">Updated 26 Apr · Al Rajhi + NCB</div>
+        <svg class="sparkline" viewBox="0 0 200 32" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#94A3B8" stroke-width="2"
+            points="0,8 20,10 40,12 60,11 80,13 100,15 120,16 140,18 160,17 180,19 200,20"/>
+        </svg>
+      </div>
+
+      <div class="card col-3">
+        <div class="card-head">
+          <div class="card-title">Runway</div>
+          <span class="delta up">8.6 months</span>
+        </div>
+        <div class="kpi-value">8.6 <span class="kpi-currency">months</span></div>
+        <div class="kpi-meta">Healthy · target raise Q1 2027</div>
+        <div class="stock-bar" style="margin-top:14px;"><span style="width:72%;"></span></div>
+      </div>
+    </div>
+
+    <!-- REVENUE BY PRODUCT + UPCOMING INVOICES -->
+    <div class="grid" style="margin-top:var(--s-4);">
+      <div class="card col-8">
+        <div class="card-head">
+          <div class="card-title">Revenue by product · April 2026</div>
+          <a class="card-action" href="#">View breakdown →</a>
+        </div>
+        <div style="display:flex; gap:var(--s-5); align-items:flex-end; padding:var(--s-3) 0 var(--s-2);">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:flex-end;gap:var(--s-3);height:140px;">
+              <div style="flex:1;text-align:center;">
+                <div style="height:120px;background:linear-gradient(180deg,#2563EB,#1E40AF);border-radius:6px 6px 0 0;"></div>
+                <div style="font-size:11px;color:var(--pa-text-muted);margin-top:6px;">Coolvex</div>
+                <div style="font-family:var(--font-num);font-weight:600;">312,400</div>
+              </div>
+              <div style="flex:1;text-align:center;">
+                <div style="height:48px;background:linear-gradient(180deg,#16A34A,#15803D);border-radius:6px 6px 0 0;"></div>
+                <div style="font-size:11px;color:var(--pa-text-muted);margin-top:6px;">INSEBT</div>
+                <div style="font-family:var(--font-num);font-weight:600;">68,000</div>
+              </div>
+              <div style="flex:1;text-align:center;">
+                <div style="height:80px;background:linear-gradient(180deg,#C58E00,#A87800);border-radius:6px 6px 0 0;"></div>
+                <div style="font-size:11px;color:var(--pa-text-muted);margin-top:6px;">Academy</div>
+                <div style="font-family:var(--font-num);font-weight:600;">106,800</div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; gap:var(--s-2); font-size:12px;">
+            <div style="display:flex;justify-content:space-between;"><span><span style="display:inline-block;width:10px;height:10px;background:#2563EB;border-radius:2px;margin-right:6px;"></span>Coolvex</span><strong>64.1%</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span><span style="display:inline-block;width:10px;height:10px;background:#C58E00;border-radius:2px;margin-right:6px;"></span>Academy</span><strong>21.9%</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span><span style="display:inline-block;width:10px;height:10px;background:#16A34A;border-radius:2px;margin-right:6px;"></span>INSEBT</span><strong>14.0%</strong></div>
+            <div style="border-top:1px solid var(--pa-border);padding-top:var(--s-2);margin-top:var(--s-2);">
+              <div style="color:var(--pa-text-muted);font-size:11px;">YTD cumulative</div>
+              <div style="font-family:var(--font-num);font-size:18px;font-weight:600;">3.42M <span style="font-size:12px;color:var(--pa-text-muted);font-family:var(--font-sans);font-weight:500;">SAR</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card col-4">
+        <div class="card-head">
+          <div class="card-title">Next invoices due</div>
+          <a class="card-action" href="#">All →</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--s-3);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-weight:600;">Bayer KSA</div>
+              <div style="font-size:11px;color:var(--pa-text-muted);">Coolvex Q2 order</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:var(--font-num);font-weight:600;">128,000</div>
+              <div class="due-pill soon">in 4 days</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--pa-border);padding-top:var(--s-3);">
+            <div>
+              <div style="font-weight:600;">Safea / Wadi Jeddah</div>
+              <div style="font-size:11px;color:var(--pa-text-muted);">Academy cohort 03</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:var(--font-num);font-weight:600;">42,500</div>
+              <div class="due-pill today">today</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--pa-border);padding-top:var(--s-3);">
+            <div>
+              <div style="font-weight:600;">Saudi Delta Co.</div>
+              <div style="font-size:11px;color:var(--pa-text-muted);">INSEBT licence advance</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:var(--font-num);font-weight:600;">200,000</div>
+              <div class="due-pill overdue">+3 days</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.2 PRODUCT STATUS BY PLATFORM -->
+    <div class="section-head">
+      <h2>Product status by platform</h2>
+      <span class="crumb">Tap a row to open the product profile</span>
+    </div>
+
+    <!-- BIOENVIRONMENT -->
+    <div class="platform-block" style="margin-bottom:var(--s-4);">
+      <div class="platform-head">
+        <div class="platform-name"><span class="platform-icon icon-bio">B</span> Bioenvironment Platform</div>
+        <span style="font-size:12px;color:var(--pa-text-muted);">2 active products</span>
+      </div>
+      <div class="product-row">
+        <div>
+          <div class="product-name">INSEBT</div>
+          <div class="product-sub">Lead scientist · Faisal Al-Zahrani · TRL 7</div>
+        </div>
+        <div>
+          <span class="stage-pill dd">Due Diligence</span>
+          <div class="metric-label" style="margin-top:4px;">Saudi Delta · 9 days no update</div>
+        </div>
+        <div>
+          <div class="metric-pair">68,000 <span class="metric-label">SAR MTD</span></div>
+          <div class="metric-label">Royalty accrued: 32,300 SAR</div>
+        </div>
+        <div class="row-action"><button>Open →</button></div>
+      </div>
+      <div class="product-row">
+        <div>
+          <div class="product-name">Palmora</div>
+          <div class="product-sub">R&amp;D · Prof. Hesham · TRL 4</div>
+        </div>
+        <div>
+          <span class="stage-pill reg">Pre-registration</span>
+          <div class="metric-label" style="margin-top:4px;">Genome seq: complete</div>
+        </div>
+        <div>
+          <div class="metric-pair">— <span class="metric-label">not yet revenue</span></div>
+          <div class="metric-label">Next milestone: semi-field</div>
+        </div>
+        <div class="row-action"><button>Open →</button></div>
+      </div>
+    </div>
+
+    <!-- BIOMEDICINE -->
+    <div class="platform-block" style="margin-bottom:var(--s-4);">
+      <div class="platform-head">
+        <div class="platform-name"><span class="platform-icon icon-med">M</span> Biomedicine Platform</div>
+        <span style="font-size:12px;color:var(--pa-text-muted);">1 active product</span>
+      </div>
+      <div class="product-row">
+        <div>
+          <div class="product-name">Coolvex</div>
+          <div class="product-sub">Inventors · Hefnawi &amp; Tayel · TRL 9</div>
+        </div>
+        <div>
+          <span class="stage-pill market">In Market</span>
+          <div class="metric-label" style="margin-top:4px;">SFDA: registered · CTD active</div>
+        </div>
+        <div>
+          <div class="metric-pair">412 <span class="metric-label">units in stock</span></div>
+          <div class="stock-bar low"><span style="width:21%;"></span></div>
+          <div class="metric-label" style="color:var(--red);margin-top:4px;">Below reorder threshold (500)</div>
+        </div>
+        <div class="row-action"><button>Open →</button></div>
+      </div>
+    </div>
+
+    <!-- ACADEMY -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="platform-name"><span class="platform-icon icon-aca">A</span> Pure Academy</div>
+        <span style="font-size:12px;color:var(--pa-text-muted);">3 active courses</span>
+      </div>
+      <div class="product-row">
+        <div>
+          <div class="product-name">Bioprocessing Foundations · Cohort 03</div>
+          <div class="product-sub">Lead · Fayez Al-Shehri · 14 enrolled</div>
+        </div>
+        <div>
+          <span class="stage-pill market">Running</span>
+          <div class="metric-label" style="margin-top:4px;">Ends 12 May 2026</div>
+        </div>
+        <div>
+          <div class="metric-pair">62,300 <span class="metric-label">SAR MTD</span></div>
+          <div class="metric-label">Royalty accrued: 12,460 SAR</div>
+        </div>
+        <div class="row-action"><button>Open →</button></div>
+      </div>
+      <div class="product-row">
+        <div>
+          <div class="product-name">Regulatory Affairs Intensive</div>
+          <div class="product-sub">Starts 18 May · 8 enrolled / 12 cap</div>
+        </div>
+        <div>
+          <span class="stage-pill mfg">Enrolling</span>
+          <div class="metric-label" style="margin-top:4px;">67% capacity</div>
+        </div>
+        <div>
+          <div class="metric-pair">44,500 <span class="metric-label">SAR booked</span></div>
+          <div class="metric-label">2 invoices outstanding</div>
+        </div>
+        <div class="row-action"><button>Open →</button></div>
+      </div>
+    </div>
+
+    <!-- 1.3 TEAM PULSE + TASKS -->
+    <div class="section-head">
+      <h2>Team pulse &amp; tasks</h2>
+      <span class="crumb">Replaces WhatsApp follow-ups</span>
+    </div>
+
+    <div class="grid">
+      <!-- WHO IS WORKING -->
+      <div class="card col-4">
+        <div class="card-head">
+          <div class="card-title">Working today</div>
+          <span style="font-size:12px;color:var(--green);font-weight:600;">5 of 7</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:var(--s-3);">
+          <div style="display:flex;align-items:center;gap:var(--s-3);">
+            <div class="who-chip" style="background:linear-gradient(135deg,#16A34A,#15803D);">FZ</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;">Faisal Al-Zahrani</div>
+              <div class="task-meta">Bioenvironment · 2 open tasks</div>
+            </div>
+            <span class="alert-pill green" style="padding:2px 8px;font-size:10px;"><span class="dot"></span>Active</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s-3);">
+            <div class="who-chip" style="background:linear-gradient(135deg,#2563EB,#1E40AF);">HF</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;">Hefnawi</div>
+              <div class="task-meta">Biomedicine · 4 open tasks</div>
+            </div>
+            <span class="alert-pill yellow" style="padding:2px 8px;font-size:10px;"><span class="dot"></span>1 blocked</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s-3);">
+            <div class="who-chip" style="background:linear-gradient(135deg,#C58E00,#A87800);">FS</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;">Fayez Al-Shehri</div>
+              <div class="task-meta">Academy · 1 open task</div>
+            </div>
+            <span class="alert-pill green" style="padding:2px 8px;font-size:10px;"><span class="dot"></span>Active</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s-3);">
+            <div class="who-chip">MO</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;">Mohammed (PA Digital)</div>
+              <div class="task-meta">Platform · 3 open tasks</div>
+            </div>
+            <span class="alert-pill green" style="padding:2px 8px;font-size:10px;"><span class="dot"></span>Active</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--s-3);opacity:0.6;">
+            <div class="who-chip">PH</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;">Prof. Hesham</div>
+              <div class="task-meta">Last seen 2 days ago</div>
+            </div>
+            <span class="alert-pill" style="padding:2px 8px;font-size:10px;background:#EEF2F6;color:var(--pa-text-muted);">Away</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TASKS DUE -->
+      <div class="card col-8">
+        <div class="card-head">
+          <div class="card-title">Tasks needing attention</div>
+          <div style="display:flex;gap:var(--s-2);">
+            <button class="btn" style="padding:4px 10px;font-size:12px;">Overdue (3)</button>
+            <button class="btn" style="padding:4px 10px;font-size:12px;background:var(--pa-bg);">This week (11)</button>
+            <button class="btn" style="padding:4px 10px;font-size:12px;">Blocked (1)</button>
+          </div>
+        </div>
+
+        <div class="task-row">
+          <span class="priority-dot pri-crit" title="Critical"></span>
+          <div>
+            <div class="task-text">Submit Coolvex CTD Module 3 response to SFDA</div>
+            <div class="task-meta">Hefnawi · Coolvex · Regulatory</div>
+          </div>
+          <span class="due-pill overdue">+4 days</span>
+          <button class="btn" style="padding:4px 8px;font-size:11px;">Escalate</button>
+        </div>
+
+        <div class="task-row">
+          <span class="priority-dot pri-crit"></span>
+          <div>
+            <div class="task-text">Confirm Coolvex reorder batch with ACMI</div>
+            <div class="task-meta">Hefnawi · Coolvex · Manufacturing · BLOCKED</div>
+          </div>
+          <span class="due-pill overdue">+2 days</span>
+          <button class="btn" style="padding:4px 8px;font-size:11px;">View blocker</button>
+        </div>
+
+        <div class="task-row">
+          <span class="priority-dot pri-high"></span>
+          <div>
+            <div class="task-text">Push Saudi Delta for INSEBT due-diligence response</div>
+            <div class="task-meta">Sultan · INSEBT · Partnership</div>
+          </div>
+          <span class="due-pill today">today</span>
+          <button class="btn" style="padding:4px 8px;font-size:11px;">Open</button>
+        </div>
+
+        <div class="task-row">
+          <span class="priority-dot pri-high"></span>
+          <div>
+            <div class="task-text">Calculate April royalty accruals (all scientists)</div>
+            <div class="task-meta">Sultan · Finance · Royalty Calculator</div>
+          </div>
+          <span class="due-pill soon">in 2 days</span>
+          <button class="btn" style="padding:4px 8px;font-size:11px;">Open</button>
+        </div>
+
+        <div class="task-row">
+          <span class="priority-dot pri-norm"></span>
+          <div>
+            <div class="task-text">Palmora — submit semi-field protocol to Waqaa</div>
+            <div class="task-meta">Faisal · Palmora · R&amp;D</div>
+          </div>
+          <span class="due-pill soon">in 5 days</span>
+          <button class="btn" style="padding:4px 8px;font-size:11px;">Open</button>
+        </div>
+
+        <div class="task-row">
+          <span class="priority-dot pri-norm"></span>
+          <div>
+            <div class="task-text">Academy Cohort 04 — open enrolment page</div>
+            <div class="task-meta">Fayez · Academy · Marketing</div>
+          </div>
+          <span class="due-pill soon">in 6 days</span>
+          <button class="btn" style="padding:4px 8px;font-size:11px;">Open</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mockup-caption">
+      Mockup · PA Command Center v1.0 · Phase 1 — CEO Dashboard. All numbers shown are illustrative.
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>
