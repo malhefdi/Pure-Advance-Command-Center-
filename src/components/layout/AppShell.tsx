@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { href: "/", label: "Dashboard", count: 4 },
   { href: "/products", label: "Products" },
+  { href: "/coolvex", label: "Coolvex™" },
   { href: "/team", label: "Team" },
   { href: "/finance", label: "Finance" },
   { href: "/pipeline", label: "Pipeline" },
