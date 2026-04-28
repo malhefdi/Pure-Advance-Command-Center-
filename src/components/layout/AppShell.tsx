@@ -7,6 +7,7 @@ const navItems = [
   { href: "/team", label: "Team" },
   { href: "/finance", label: "Finance" },
   { href: "/pipeline", label: "Pipeline" },
+  { href: "/crm", label: "Partners" },
   { href: "/ownership", label: "Ownership" },
   { href: "/ai", label: "AI" },
 ];

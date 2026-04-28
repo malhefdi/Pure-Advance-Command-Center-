@@ -1,29 +1,38 @@
-﻿import type { DashboardSnapshot, FinancialPulse, Invoice, ModuleSummary, PlatformBlockData, RevenueProduct, Task, TeamMember } from "@/types/command-center";
+import type { DashboardSnapshot, FinancialPulse, Invoice, ModuleSummary, PlatformBlockData, RevenueProduct, Task, TeamMember } from "@/types/command-center";
 
+/* ──────────────────────────────────────────────────────────────
+   Pure Advance — Real Data from pureadvance-v2 Source of Truth
+   Last verified: 2026-04-28
+   ────────────────────────────────────────────────────────────── */
+
+// ── Financial Pulse ──────────────────────────────────────────
+// Pre-revenue startup. Coolvex quote pending. No MTD revenue yet.
 export const financialPulse: FinancialPulse = {
   period: "mtd",
-  revenue: 487200,
-  netProfit: 132600,
-  cash: 1180000,
-  burnRate: 175000,
-  runwayMonths: 6.7,
-  sparkSeries: [32, 36, 34, 43, 47, 52, 56, 61],
-  lastUpdated: new Date(Date.now() - 42 * 60 * 1000).toISOString(),
+  revenue: 0,
+  netProfit: 0,
+  cash: 0, // Not disclosed
+  burnRate: 0, // Not disclosed
+  runwayMonths: 0, // Not disclosed
+  sparkSeries: [0, 0, 0, 0, 0, 0, 0, 0],
+  lastUpdated: new Date().toISOString(),
 };
 
+// ── Revenue by Product ───────────────────────────────────────
+// Pre-revenue — no product revenue yet. Coolvex quote pending (SAR 51,750).
 export const revenueByProduct: RevenueProduct[] = [
-  { productId: "bio-enz-clean", name: "BioEnz Cleaner", platform: "bio", amountSAR: 164000, share: 0.34 },
-  { productId: "med-dx-kit", name: "MedDx Rapid Kit", platform: "med", amountSAR: 138500, share: 0.28 },
-  { productId: "academy-pro", name: "PA Academy Pro", platform: "aca", amountSAR: 96800, share: 0.2 },
-  { productId: "bio-remediate", name: "BioRemediate Plus", platform: "bio", amountSAR: 87900, share: 0.18 },
+  { productId: "insebt", name: "INSEBT", platform: "bio", amountSAR: 0, share: 0 },
+  { productId: "coolvex", name: "Coolvex", platform: "med", amountSAR: 0, share: 0 },
+  { productId: "letha", name: "LETHA", platform: "med", amountSAR: 0, share: 0 },
+  { productId: "palmora", name: "PALMORA", platform: "bio", amountSAR: 0, share: 0 },
 ];
 
+// ── Invoices ─────────────────────────────────────────────────
 export const invoices: Invoice[] = [
-  { invoiceId: "inv-1007", partnerName: "Riyadh Health Group", productId: "med-dx-kit", amountSAR: 86000, dueDate: "2026-04-29", status: "upcoming" },
-  { invoiceId: "inv-1008", partnerName: "Green Dunes Co.", productId: "bio-enz-clean", amountSAR: 42000, dueDate: "2026-05-02", status: "upcoming" },
-  { invoiceId: "inv-1009", partnerName: "North Lab", productId: "bio-remediate", amountSAR: 31500, dueDate: "2026-05-06", status: "upcoming" },
+  { invoiceId: "accmi-s00163", partnerName: "ACCMi", productId: "coolvex", amountSAR: 51750, dueDate: "2026-05-26", status: "upcoming" },
 ];
 
+// ── Product Status ───────────────────────────────────────────
 export const productStatus: PlatformBlockData[] = [
   {
     id: "bio",
@@ -31,18 +40,102 @@ export const productStatus: PlatformBlockData[] = [
     icon: "Leaf",
     productCount: 2,
     products: [
-      { productId: "bio-enz-clean", name: "BioEnz Cleaner", subtitle: "Industrial enzyme cleaner", platform: "bio", stage: "market", stageLabel: "Market", owner: "Dr. Noura", actionLabel: "Open product", metrics: [{ label: "Stock", value: "1,240 units", tone: "green" }, { label: "MTD", value: "164K SAR", tone: "green" }], stock: { current: 1240, threshold: 400, max: 1800 } },
-      { productId: "bio-remediate", name: "BioRemediate Plus", subtitle: "Soil remediation pilot", platform: "bio", stage: "mfg", stageLabel: "Manufacturing", owner: "Eng. Faisal", actionLabel: "Open product", metrics: [{ label: "Pilot", value: "Batch 3", tone: "blue" }, { label: "Stock", value: "140 units", tone: "red" }], stock: { current: 140, threshold: 250, max: 800 } },
+      {
+        productId: "insebt",
+        name: "INSEBT",
+        subtitle: "Bt biopesticide — Bacillus thuringiensis kurstaki",
+        platform: "bio",
+        stage: "dd",
+        stageLabel: "R&D / D&D",
+        owner: "Dr. Faisal Alzahrani",
+        actionLabel: "Open product",
+        metrics: [
+          { label: "Status", value: "80% URS", tone: "blue" },
+          { label: "Bioreactor", value: "5,000L target", tone: "yellow" },
+          { label: "kLa", value: "≥120 h⁻¹", tone: "green" },
+          { label: "Partner", value: "Delta (signed)", tone: "green" },
+        ],
+      },
+      {
+        productId: "palmora",
+        name: "PALMORA",
+        subtitle: "Red Palm Weevil biocontrol",
+        platform: "bio",
+        stage: "dd",
+        stageLabel: "Field Research",
+        owner: "Dr. Faisal Alzahrani",
+        actionLabel: "Open product",
+        metrics: [
+          { label: "Field", value: "Al-Ahsa (Jan 2026)", tone: "blue" },
+          { label: "Target", value: "RPW pest", tone: "yellow" },
+        ],
+      },
     ],
   },
   {
     id: "med",
     name: "Biomedicine",
     icon: "Pulse",
-    productCount: 2,
+    productCount: 4,
     products: [
-      { productId: "med-dx-kit", name: "MedDx Rapid Kit", subtitle: "Point-of-care diagnostics", platform: "med", stage: "reg", stageLabel: "Registration", owner: "Dr. Reem", actionLabel: "Open product", metrics: [{ label: "SFDA", value: "Review", tone: "yellow" }, { label: "MTD", value: "139K SAR", tone: "green" }], stock: { current: 520, threshold: 300, max: 1000 } },
-      { productId: "med-cell-media", name: "Cell Media Starter Pack", subtitle: "Lab consumables bundle", platform: "med", stage: "dd", stageLabel: "D&D", owner: "Dr. Hadi", actionLabel: "Open product", metrics: [{ label: "Validation", value: "72%", tone: "blue" }, { label: "Blocker", value: "Supplier", tone: "yellow" }] },
+      {
+        productId: "coolvex",
+        name: "Coolvex",
+        subtitle: "Topical natural ointment — hemorrhoid/fissure treatment",
+        platform: "med",
+        stage: "mfg",
+        stageLabel: "Manufacturing",
+        owner: "Dr. Sultan Alhayyani",
+        actionLabel: "Open product",
+        metrics: [
+          { label: "Patent", value: "SA 1020257888", tone: "green" },
+          { label: "Mfg Quote", value: "SAR 51,750", tone: "blue" },
+          { label: "MOQ", value: "5,000 units", tone: "yellow" },
+          { label: "Lead Time", value: "60-90 days", tone: "yellow" },
+        ],
+      },
+      {
+        productId: "letha",
+        name: "LETHA",
+        subtitle: "Biotech gum comfort gel — peptide + chitosan nanoparticle delivery",
+        platform: "med",
+        stage: "dd",
+        stageLabel: "R&D",
+        owner: "Dr. Sultan Alhayyani",
+        actionLabel: "Open product",
+        metrics: [
+          { label: "Target", value: "DZRT users KSA", tone: "blue" },
+          { label: "Timeline", value: "12-15 months", tone: "yellow" },
+          { label: "Price", value: "SAR 120-180", tone: "green" },
+          { label: "Regulatory", value: "SFDA cosmetic", tone: "blue" },
+        ],
+      },
+      {
+        productId: "colnano",
+        name: "Colnano",
+        subtitle: "Nanotechnology R&D",
+        platform: "med",
+        stage: "dd",
+        stageLabel: "R&D (Early)",
+        owner: "Dr. Sultan Alhayyani",
+        actionLabel: "Open product",
+        metrics: [
+          { label: "Status", value: "R&D", tone: "yellow" },
+        ],
+      },
+      {
+        productId: "vitashield",
+        name: "VitaShield",
+        subtitle: "Nanotechnology R&D",
+        platform: "med",
+        stage: "dd",
+        stageLabel: "R&D (Early)",
+        owner: "Dr. Sultan Alhayyani",
+        actionLabel: "Open product",
+        metrics: [
+          { label: "Status", value: "R&D", tone: "yellow" },
+        ],
+      },
     ],
   },
   {
@@ -51,32 +144,67 @@ export const productStatus: PlatformBlockData[] = [
     icon: "Cap",
     productCount: 1,
     products: [
-      { productId: "academy-pro", name: "PA Academy Pro", subtitle: "Executive training program", platform: "aca", stage: "market", stageLabel: "Market", owner: "Maha", actionLabel: "Open cohort", metrics: [{ label: "Seats", value: "38/50", tone: "green" }, { label: "MTD", value: "97K SAR", tone: "green" }] },
+      {
+        productId: "pure-academy",
+        name: "Pure Academy",
+        subtitle: "Biomedical sciences training — SAFEA MoU",
+        platform: "aca",
+        stage: "reg",
+        stageLabel: "MoU Active",
+        owner: "Dr. Fayez Alshehri",
+        actionLabel: "Open academy",
+        metrics: [
+          { label: "MoU", value: "SAFEA (Apr 8)", tone: "green" },
+          { label: "Term", value: "1 year", tone: "blue" },
+          { label: "Exit", value: "15-day notice", tone: "yellow" },
+        ],
+      },
     ],
   },
 ];
 
+// ── Team Pulse ───────────────────────────────────────────────
 export const teamPulse: TeamMember[] = [
-  { memberId: "tm-1", name: "Dr. Noura", status: "working", openTasks: 4, lastSeen: "08:46", manager: "Sultan" },
-  { memberId: "tm-2", name: "Eng. Faisal", status: "in-meeting", openTasks: 7, lastSeen: "09:12", manager: "Sultan" },
-  { memberId: "tm-3", name: "Dr. Reem", status: "working", openTasks: 3, lastSeen: "08:55", manager: "Sultan" },
-  { memberId: "tm-4", name: "Maha", status: "offline", openTasks: 2, lastSeen: "Yesterday", manager: "Sultan" },
+  { memberId: "sultan", name: "Dr. Sultan Alhayyani", status: "working", openTasks: 5, lastSeen: "Now", manager: "CEO" },
+  { memberId: "faisal", name: "Dr. Faisal Alzahrani", status: "working", openTasks: 4, lastSeen: "Now", manager: "Sultan" },
+  { memberId: "ahmed", name: "Prof. Ahmed Tayel", status: "working", openTasks: 3, lastSeen: "Today", manager: "Sultan" },
+  { memberId: "mohammed", name: "Mohammed Alhefdi", status: "working", openTasks: 6, lastSeen: "Now", manager: "Sultan" },
+  { memberId: "abdulrahman", name: "Abdulrahman Alalmaee", status: "working", openTasks: 2, lastSeen: "Today", manager: "Sultan" },
+  { memberId: "ishteaq", name: "Ishteaq Mustaque", status: "working", openTasks: 2, lastSeen: "Today", manager: "Sultan" },
+  { memberId: "fayez", name: "Dr. Fayez Alshehri", status: "working", openTasks: 3, lastSeen: "Today", manager: "Sultan" },
+  { memberId: "ammar", name: "Ammar Alshehri", status: "working", openTasks: 2, lastSeen: "Today", manager: "Sultan" },
 ];
 
+// ── Tasks ────────────────────────────────────────────────────
 export const tasks: Task[] = [
-  { taskId: "task-101", title: "Confirm reorder quantity for BioRemediate Plus", assignee: "Eng. Faisal", manager: "Sultan", product: "BioRemediate Plus", dueDate: "2026-04-25", priority: "critical", status: "overdue", blocker: "Awaiting supplier minimum-order confirmation." },
-  { taskId: "task-102", title: "Send SFDA response packet", assignee: "Dr. Reem", manager: "Sultan", product: "MedDx Rapid Kit", dueDate: "2026-04-26", priority: "high", status: "due-today" },
-  { taskId: "task-103", title: "Finalize Academy cohort schedule", assignee: "Maha", manager: "Sultan", product: "PA Academy Pro", dueDate: "2026-04-30", priority: "normal", status: "soon" },
-  { taskId: "task-104", title: "Resolve supplier certificate gap", assignee: "Dr. Hadi", manager: "Sultan", product: "Cell Media Starter Pack", dueDate: "2026-04-28", priority: "high", status: "blocked", blocker: "Supplier certificate does not include lot traceability." },
+  { taskId: "task-001", title: "Complete INSEBT URS (User Requirements Specification)", assignee: "Dr. Faisal Alzahrani", manager: "Sultan", product: "INSEBT", dueDate: "2026-05-15", priority: "critical", status: "on-track" },
+  { taskId: "task-002", title: "Submit Coolvex manufacturing PO to ACCMi", assignee: "Ishteaq Mustaque", manager: "Sultan", product: "Coolvex", dueDate: "2026-05-01", priority: "high", status: "soon" },
+  { taskId: "task-003", title: "Prepare V4 slides for Chouayekh meeting (May 1)", assignee: "Mohammed Alhefdi", manager: "Sultan", product: "INSEBT", dueDate: "2026-05-01", priority: "critical", status: "due-today" },
+  { taskId: "task-004", title: "Delta technical transfer planning", assignee: "Dr. Faisal Alzahrani", manager: "Sultan", product: "INSEBT", dueDate: "2026-05-15", priority: "high", status: "on-track" },
+  { taskId: "task-005", title: "LETHA peptide sourcing — identify synthesis partner", assignee: "Dr. Sultan Alhayyani", manager: "CEO", product: "LETHA", dueDate: "2026-05-30", priority: "normal", status: "on-track" },
+  { taskId: "task-006", title: "Pure Academy program design with SAFEA", assignee: "Dr. Fayez Alshehri", manager: "Sultan", product: "Pure Academy", dueDate: "2026-05-15", priority: "high", status: "on-track" },
+  { taskId: "task-007", title: "5,000L bioreactor RFQ — send to 3 vendors", assignee: "Mohammed Alhefdi", manager: "Sultan", product: "INSEBT", dueDate: "2026-05-10", priority: "critical", status: "blocked", blocker: "Waiting on URS completion" },
+  { taskId: "task-008", title: "Btk strain HD-1 confirmation from Delta", assignee: "Dr. Faisal Alzahrani", manager: "Sultan", product: "INSEBT", dueDate: "2026-05-05", priority: "high", status: "blocked", blocker: "Delta not yet confirmed strain identity" },
 ];
 
+// ── Alerts ───────────────────────────────────────────────────
+export const alerts = [
+  { alertId: "alert-001", severity: "red" as const, message: "ACCMi pro forma expires May 26 — submit PO before deadline", sourceRef: "coolvex", createdAt: new Date().toISOString() },
+  { alertId: "alert-002", severity: "yellow" as const, message: "Chouayekh meeting in 3 days (May 1) — V4 slides ready", sourceRef: "insebt", createdAt: new Date().toISOString() },
+  { alertId: "alert-003", severity: "yellow" as const, message: "Bioreactor RFQ blocked — waiting on URS completion", sourceRef: "insebt", createdAt: new Date().toISOString() },
+  { alertId: "alert-004", severity: "blue" as const, message: "SAFEA MoU active — Pure Academy program design in progress", sourceRef: "pure-academy", createdAt: new Date().toISOString() },
+];
+
+// ── Module Summaries ─────────────────────────────────────────
 export const moduleSummaries: ModuleSummary[] = [
-  { href: "/products", title: "Product Profiles", eyebrow: "Module 2", description: "Lifecycle, ownership, stock, and profitability views for every PA product.", status: "foundation", bullets: ["Product drill-down routes", "Royalty calculator placeholder", "Product finance contracts"] },
-  { href: "/team", title: "Team Operations", eyebrow: "Module 3", description: "Task ownership, blockers, daily check-ins, and escalation history.", status: "foundation", bullets: ["Overdue/week/blocked filters", "Escalation workflow", "Manager routing"] },
-  { href: "/finance", title: "Finance and Cash Control", eyebrow: "Module 4", description: "Revenue, COGS, expenses, invoices, runway, and source-of-truth net profit.", status: "foundation", bullets: ["Net profit definition", "Runway alerts", "Invoice adapters"] },
+  { href: "/products", title: "Product Profiles", eyebrow: "Module 2", description: "Lifecycle, ownership, stock, and profitability views for every PA product.", status: "live", bullets: ["7 products across 3 platforms", "INSEBT (Bt biopesticide)", "Coolvex (patent SA 1020257888)", "LETHA (biotech gum gel)", "PALMORA (Red Palm Weevil)", "Pure Academy (SAFEA MoU)"] },
+  { href: "/team", title: "Team Operations", eyebrow: "Module 3", description: "Task ownership, blockers, daily check-ins, and escalation history.", status: "live", bullets: ["8 active team members", "Real task tracking", "Blocker visibility", "Manager routing"] },
+  { href: "/finance", title: "Finance and Cash Control", eyebrow: "Module 4", description: "Revenue, COGS, expenses, invoices, runway, and source-of-truth net profit.", status: "foundation", bullets: ["Pre-revenue startup", "Coolvex quote: SAR 51,750", "Invoice tracking", "Budget planning"] },
+  { href: "/crm", title: "Partners & CRM", eyebrow: "Module 5b", description: "Current partners, prospects, outreach targets, interaction log, and follow-up tracking.", status: "live", bullets: ["14 partners tracked", "Interaction timeline", "Add partner & log interactions", "Follow-up reminders"] },
   { href: "/pipeline", title: "Regulatory and R&D Pipeline", eyebrow: "Module 5", description: "D&D, registration, manufacturing, and market-stage blockers.", status: "planned", bullets: ["Lifecycle gates", "Compliance blockers", "Source-linked alerts"] },
   { href: "/ownership", title: "Ownership and Strategic Finance", eyebrow: "Module 6", description: "Cap table and SAFE scenarios isolated from operational dashboard scope.", status: "planned", bullets: ["Feature flag", "Scenario inputs", "Audit trail"] },
   { href: "/ai", title: "AI Executive Query Layer", eyebrow: "Module 7", description: "Read-only anomaly detection, natural-language queries, and executive summaries.", status: "planned", bullets: ["Source citations", "Read-only launch", "Anomaly thresholds"] },
 ];
 
-export const dashboardSnapshot: Omit<DashboardSnapshot, "alerts"> = { financialPulse, revenueByProduct, invoices, productStatus, teamPulse, tasks };
+// ── Dashboard Snapshot ───────────────────────────────────────
+export const dashboardSnapshot = { financialPulse, revenueByProduct, invoices, productStatus, teamPulse, tasks, alerts };
