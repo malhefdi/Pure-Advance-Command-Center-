@@ -89,9 +89,10 @@ export const productStatus: PlatformBlockData[] = [
         actionLabel: "Open product",
         metrics: [
           { label: "Patent", value: "SA 1020257888", tone: "green" },
-          { label: "Mfg Quote", value: "SAR 51,750", tone: "blue" },
-          { label: "MOQ", value: "5,000 units", tone: "yellow" },
-          { label: "Lead Time", value: "60-90 days", tone: "yellow" },
+          { label: "50% Paid", value: "Apr 28", tone: "green" },
+          { label: "Ingredient", value: "May 4 delivery", tone: "blue" },
+          { label: "Ready", value: "May 5-14", tone: "yellow" },
+          { label: "SFDA", value: "Pending", tone: "red" },
         ],
       },
       {
