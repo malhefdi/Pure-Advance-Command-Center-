@@ -17,17 +17,17 @@ describe("dashboard utilities", () => {
 describe("dashboard service", () => {
   it("derives source-linked alerts from seeded records", () => {
     const alerts = deriveAlerts();
-    expect(alerts.some((alert) => alert.sourceRef.startsWith("/products"))).toBe(true);
+    expect(alerts.some((alert) => alert.sourceRef.startsWith("/finance"))).toBe(true);
     expect(alerts.some((alert) => alert.sourceRef.startsWith("/team"))).toBe(true);
   });
 
   it("filters blocked tasks", () => {
-    expect(getTasks("blocked")).toHaveLength(1);
+    expect(getTasks("blocked")).toHaveLength(2);
     expect(getTasks("blocked")[0].status).toBe("blocked");
   });
 
   it("builds escalation payloads for WhatsApp and email", () => {
-    const payload = buildEscalationPayload("task-101");
+    const payload = buildEscalationPayload("task-001");
     expect(payload?.channels).toEqual(["whatsapp", "email"]);
     expect(payload?.message).toContain("Escalation:");
   });

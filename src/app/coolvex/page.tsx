@@ -47,7 +47,7 @@ export default function CoolvexPage() {
   ];
 
   return (
-    <AppShell>
+    <AppShell active="/coolvex">
       <MobileNav />
       <main className="mx-auto max-w-6xl px-4 py-8 space-y-6">
         {/* Header */}

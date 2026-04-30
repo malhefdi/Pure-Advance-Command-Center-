@@ -24,14 +24,29 @@ export function ActionLane({ items }: { items: ActionItem[] }) {
   return (
     <div className="space-y-2">
       {sorted.map((item, i) => (
-        <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-3">
-          <span className={`w-2.5 h-2.5 rounded-full ${priorityDot[item.priority]}`} />
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium text-gray-900 truncate">{item.title}</div>
-            <div className="text-xs text-gray-500">{item.owner} · {item.product}</div>
+        <div
+          key={i}
+          className="flex flex-col gap-2 rounded-xl border border-gray-200 bg-white p-3 sm:flex-row sm:flex-nowrap sm:items-center sm:gap-3"
+        >
+          <div className="flex min-w-0 gap-3 sm:flex-1 sm:items-center">
+            <span
+              className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full sm:mt-0 ${priorityDot[item.priority]}`}
+            />
+            <div className="min-w-0 flex-1 space-y-1">
+              <div className="text-sm font-medium break-words text-gray-900 sm:truncate">{item.title}</div>
+              <div className="w-full text-xs text-gray-500 break-words">
+                {item.owner} · {item.product}
+              </div>
+            </div>
           </div>
-          <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${statusBadge[item.status]}`}>{item.status}</span>
-          <span className="text-xs text-gray-400">{item.due}</span>
+          <div className="flex w-full min-w-0 shrink-0 flex-col gap-2 pt-1 sm:w-auto sm:flex-row sm:flex-nowrap sm:items-center sm:justify-end sm:gap-3 sm:pt-0">
+            <span
+              className={`inline-flex w-fit max-w-full px-2 py-0.5 text-[10px] font-medium rounded-full ${statusBadge[item.status]}`}
+            >
+              {item.status}
+            </span>
+            <span className="w-full min-w-0 text-xs break-words text-gray-400 sm:w-auto">{item.due}</span>
+          </div>
         </div>
       ))}
     </div>
