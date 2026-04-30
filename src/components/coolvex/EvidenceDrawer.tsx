@@ -19,8 +19,24 @@ export function EvidenceDrawer({ sources }: { sources: EvidenceSource[] }) {
         <span className="text-xs text-gray-400">{open ? "▲ Collapse" : "▼ Expand"}</span>
       </button>
       {open && (
-        <div className="border-t border-gray-100 overflow-x-auto">
-          <table className="w-full text-xs">
+        <div className="border-t border-gray-100">
+          <div className="grid gap-3 p-3 sm:hidden">
+            {sources.map((s, i) => (
+              <div key={i} className="rounded-lg border border-gray-100 bg-gray-50 p-3">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="font-medium text-gray-800">{s.claim}</div>
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium ${confidenceBadge[s.confidence]}`}>
+                    {s.confidence}
+                  </span>
+                </div>
+                <div className="mt-2 text-sm text-gray-700">{s.value}</div>
+                <div className="mt-2 text-xs text-gray-500" title={s.source}>Source: {s.source.split("/").pop()}</div>
+                <div className="mt-1 text-xs text-gray-400">Modified: {s.modified}</div>
+              </div>
+            ))}
+          </div>
+          <div className="hidden overflow-x-auto sm:block">
+            <table className="w-full text-xs">
             <thead>
               <tr className="bg-gray-50">
                 <th className="text-left py-2 px-4 font-medium text-gray-500">Claim</th>
@@ -42,6 +58,7 @@ export function EvidenceDrawer({ sources }: { sources: EvidenceSource[] }) {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

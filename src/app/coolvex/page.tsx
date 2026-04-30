@@ -35,6 +35,9 @@ export default function CoolvexPage() {
     "cockpit" | "timeline" | "market" | "competitors" | "pharmacy" | "scenarios" | "actions" | "evidence"
   >("cockpit");
 
+  const verifiedSources = evidenceSources.filter((source) => source.confidence === "verified").length;
+  const criticalActions = actionItems.filter((action) => action.priority === "critical");
+
   const sections = [
     { id: "cockpit" as const, label: "🎯 Launch Cockpit" },
     { id: "timeline" as const, label: "📅 Timeline" },
@@ -49,41 +52,68 @@ export default function CoolvexPage() {
   return (
     <AppShell active="/coolvex">
       <MobileNav />
-      <main className="mx-auto max-w-6xl px-4 py-8 space-y-6">
+      <main className="mx-auto max-w-6xl px-4 py-6 space-y-6 sm:px-6 lg:py-8">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-brand-navy">Coolvex™ Dashboard</h1>
-            <p className="text-sm text-text-muted">Topical natural ointment — hemorrhoid/fissure treatment</p>
+        <div className="rounded-2xl border border-purple-100 bg-gradient-to-br from-white via-purple-50 to-blue-50 p-4 shadow-sm sm:p-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-3xl space-y-2">
+              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-purple-700">Phase 4 executive cockpit</div>
+              <h1 className="text-2xl font-bold text-brand-navy sm:text-3xl">Coolvex™ Dashboard</h1>
+              <p className="text-sm leading-6 text-text-muted sm:text-base">
+                Topical natural ointment — hemorrhoid/fissure treatment. Built for investor and operator review with
+                evidence confidence, channel readiness, and next-action ownership visible above the fold.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+              <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800">Manufacturing ready</span>
+              <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">SFDA pending</span>
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">{verifiedSources}/{evidenceSources.length} verified sources</span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="rounded-full bg-purple-100 text-purple-800 px-3 py-1 text-xs font-medium">Manufacturing</span>
-            <span className="rounded-full bg-amber-100 text-amber-800 px-3 py-1 text-xs font-medium">SFDA Pending</span>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-xl border border-white/70 bg-white/80 p-3">
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Next unlock</div>
+              <div className="mt-1 text-sm font-bold text-gray-900">Purchase order before ACCMi expiry</div>
+              <div className="mt-1 text-xs text-gray-500">Executive risk surfaced from critical action lane.</div>
+            </div>
+            <div className="rounded-xl border border-white/70 bg-white/80 p-3">
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Pilot footprint</div>
+              <div className="mt-1 text-sm font-bold text-gray-900">420 Riyadh pharmacies mapped</div>
+              <div className="mt-1 text-xs text-gray-500">Seven chains from the Y1 target dashboard.</div>
+            </div>
+            <div className="rounded-xl border border-white/70 bg-white/80 p-3">
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Evidence posture</div>
+              <div className="mt-1 text-sm font-bold text-gray-900">Claims labelled by confidence</div>
+              <div className="mt-1 text-xs text-gray-500">Unverified or reconciled numbers are flagged, not buried.</div>
+            </div>
           </div>
         </div>
 
         {/* Section Nav */}
-        <div className="flex flex-wrap gap-1 rounded-lg bg-gray-100 p-1">
-          {sections.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => setSection(s.id)}
-              className={`rounded-md px-3 py-2 text-sm font-medium transition ${
-                section === s.id
-                  ? "bg-white text-brand-navy shadow-sm"
-                  : "text-text-muted hover:text-text-primary"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
+        <div className="sticky top-0 z-10 -mx-4 overflow-x-auto border-y border-gray-100 bg-white/95 px-4 py-2 backdrop-blur sm:mx-0 sm:rounded-xl sm:border sm:bg-gray-100 sm:p-1">
+          <div className="flex min-w-max gap-1 sm:min-w-0 sm:flex-wrap">
+            {sections.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => setSection(s.id)}
+                className={`rounded-md px-3 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-purple-300 ${
+                  section === s.id
+                    ? "bg-brand-navy text-white shadow-sm sm:bg-white sm:text-brand-navy"
+                    : "text-text-muted hover:bg-white hover:text-text-primary"
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* ─── Launch Cockpit ─── */}
         {section === "cockpit" && (
           <div className="space-y-6">
             {/* Key Metrics with Evidence */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {gtmStats.map((stat) => (
                 <EvidenceMetricCard key={stat.label} stat={stat} />
               ))}
@@ -96,7 +126,7 @@ export default function CoolvexPage() {
             <div className="rounded-xl border border-red-200 bg-red-50 p-4">
               <h3 className="font-bold text-red-900 mb-2">⚠️ Critical Next Actions</h3>
               <ul className="text-sm text-red-800 space-y-1">
-                {actionItems.filter((a) => a.priority === "critical").map((a, i) => (
+                {criticalActions.map((a, i) => (
                   <li key={i}>• {a.title} ({a.owner})</li>
                 ))}
               </ul>
