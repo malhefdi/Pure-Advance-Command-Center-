@@ -13,6 +13,7 @@ import {
   evidenceSources,
   manufacturingQuote,
   patentInfo,
+  regulatoryCertificate,
 } from "@/lib/coolvex-epic-data";
 import { EvidenceMetricCard } from "@/components/coolvex/EvidenceMetricCard";
 import { ScenarioCard } from "@/components/coolvex/ScenarioCard";
@@ -37,6 +38,7 @@ export default function CoolvexPage() {
 
   const verifiedSources = evidenceSources.filter((source) => source.confidence === "verified").length;
   const criticalActions = actionItems.filter((action) => action.priority === "critical");
+  const hasCriticalActions = criticalActions.length > 0;
 
   const sections = [
     { id: "cockpit" as const, label: "🎯 Launch Cockpit" },
@@ -60,13 +62,13 @@ export default function CoolvexPage() {
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-purple-700">Phase 4 executive cockpit</div>
               <h1 className="text-2xl font-bold text-brand-navy sm:text-3xl">Coolvex™ Dashboard</h1>
               <p className="text-sm leading-6 text-text-muted sm:text-base">
-                Topical natural ointment in the cosmetics channel — built for investor and operator review with
-                evidence confidence, channel readiness, and next-action ownership visible above the fold.
+                Topical natural cosmetic ointment — comfort and channel-readiness view. Built for investor and operator
+                review with evidence confidence, conservative regulatory wording, and next-action ownership visible above the fold.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2 lg:justify-end">
-              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">Manufacturing ready</span>
-              <span className="rounded-full bg-teal-100 px-3 py-1 text-xs font-medium text-teal-800">SFDA cosmetic notification: CN-2026-59889</span>
+              <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800">Manufacturing quote on file</span>
+              <span className="rounded-full bg-teal-100 px-3 py-1 text-xs font-medium text-teal-800">SFDA cosmetic product notification certificate on file</span>
               <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">{verifiedSources}/{evidenceSources.length} verified sources</span>
             </div>
           </div>
@@ -74,7 +76,7 @@ export default function CoolvexPage() {
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <div className="rounded-xl border border-white/70 bg-white/80 p-3">
               <div className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">Next unlock</div>
-              <div className="mt-1 text-sm font-bold text-gray-900">Purchase order before ACCMi expiry</div>
+              <div className="mt-1 text-sm font-bold text-gray-900">Batch timeline and GMP documentation</div>
               <div className="mt-1 text-xs text-gray-500">Executive risk surfaced from critical action lane.</div>
             </div>
             <div className="rounded-xl border border-white/70 bg-white/80 p-3">
@@ -119,17 +121,21 @@ export default function CoolvexPage() {
               ))}
             </div>
 
-            {/* Manufacturing + Patent */}
-            <ManufacturingReadiness quote={manufacturingQuote} patent={patentInfo} />
+            {/* Manufacturing + Patent + Regulatory */}
+            <ManufacturingReadiness quote={manufacturingQuote} patent={patentInfo} certificate={regulatoryCertificate} />
 
             {/* Quick Actions */}
             <div className="rounded-xl border border-red-200 bg-red-50 p-4">
               <h3 className="font-bold text-red-900 mb-2">⚠️ Critical Next Actions</h3>
-              <ul className="text-sm text-red-800 space-y-1">
-                {criticalActions.map((a, i) => (
-                  <li key={i}>• {a.title} ({a.owner})</li>
-                ))}
-              </ul>
+              {hasCriticalActions ? (
+                <ul className="text-sm text-red-800 space-y-1">
+                  {criticalActions.map((a, i) => (
+                    <li key={i}>• {a.title} ({a.owner})</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-red-800">No critical actions currently loaded.</p>
+              )}
             </div>
           </div>
         )}
@@ -137,15 +143,19 @@ export default function CoolvexPage() {
         {/* ─── Manufacturing Timeline ─── */}
         {section === "timeline" && (
           <div className="space-y-3">
+            {milestones.length === 0 && (
+              <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-500">No milestones loaded.</div>
+            )}
             {milestones.map((m, i) => (
               <div
                 key={i}
-                className={`flex items-center gap-4 rounded-xl border p-4 transition ${STATUS_COLORS[m.status]}`}
+                className={`flex flex-col gap-3 rounded-xl border p-4 transition sm:flex-row sm:items-center sm:gap-4 ${STATUS_COLORS[m.status]}`}
               >
                 <span className="text-2xl">{m.icon}</span>
                 <div className="flex-1">
                   <div className="font-medium text-text-primary">{m.label}</div>
                   <div className="text-xs text-text-muted">{m.date}</div>
+                  <div className="text-[11px] text-gray-400">Source: {m.source}</div>
                 </div>
                 {m.status === "next" && (
                   <span className="rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs font-medium animate-pulse">NEXT</span>
@@ -163,10 +173,10 @@ export default function CoolvexPage() {
               <MarketBattlefield data={marketData} />
             </div>
             <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-              <h3 className="font-bold text-blue-900 mb-2">🔵 Amazon.sa Blue Ocean Confirmed</h3>
+              <h3 className="font-bold text-blue-900 mb-2">🔵 Amazon.sa opportunity signal</h3>
               <p className="text-sm text-blue-800">
-                Neo Healar and Hemagel Procto are <strong>absent</strong> from Amazon.sa.
-                Coolvex can capture first-mover advantage in the e-commerce hemorrhoid treatment category.
+                Current evidence indicates Neo Healar and Hemagel Procto were absent from Amazon.sa during the reviewed scan.
+                Treat this as a channel opportunity to re-verify before public launch commitments.
               </p>
             </div>
           </div>
@@ -190,7 +200,7 @@ export default function CoolvexPage() {
                 <div className="font-bold text-purple-800">Coolvex Positioning</div>
                 <div>• Price: SAR 69 (premium herbal tier)</div>
                 <div>• Competes with: Rohelar, Healarido, Neo Healar</div>
-                <div>• Differentiator: nanocomposite ZnO + patent protection</div>
+                <div>• Differentiator: natural formulation positioning + pending SAIP application</div>
                 <div>• Channel: pharmacy pilot → Amazon/Noon/Salasa</div>
               </div>
             </div>
@@ -214,15 +224,15 @@ export default function CoolvexPage() {
         {section === "scenarios" && (
           <div className="space-y-4">
             <h2 className="text-lg font-bold text-gray-900">Year 1 Target Scenarios</h2>
-            <p className="text-sm text-gray-500">Net profit: 12.65 SAR/unit · 420 pilot pharmacies · Riyadh = 50% national private market</p>
+            <p className="text-sm text-gray-500">Planning model: 12.65 SAR/unit · 420 pilot pharmacies · Riyadh assumption requires ongoing validation</p>
             <div className="grid md:grid-cols-2 gap-4">
               {y1Scenarios.map((s) => (
                 <ScenarioCard key={s.scenario} scenario={s} highlight={s.scenario === "Base Case"} />
               ))}
             </div>
             <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-              <strong>⚠️ Note:</strong> Previous page showed Y1 profit as "SAR 180K-320K". Extracted sheet base case is SAR 132,825.
-              The higher range may represent an older or alternate model. Needs reconciliation.
+              <strong>⚠️ Note:</strong> Previous materials showed Y1 profit as "SAR 180K-320K". Extracted sheet base case is SAR 132,825.
+              The higher range may represent an older or alternate model and should not be used externally until reconciled.
             </div>
           </div>
         )}
@@ -243,9 +253,9 @@ export default function CoolvexPage() {
             <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-600">
               <div className="font-bold text-gray-800 mb-2">Data Quality Notes</div>
               <ul className="space-y-1">
-                <li>✅ High confidence: XLSX-derived market/scenario numbers, pharmacy counts, CRM seed data</li>
-                <li>⚠️ Medium: Narrative claims from KSA Hemorrhoid Market Analysis until citations audited</li>
-                <li>❌ Blocked: Feb 2026 Google Slides need Drive API export</li>
+                <li>✅ High confidence: XLSX-derived market/scenario numbers, pharmacy counts, certificate number, CRM seed data</li>
+                <li>⚠️ Medium: Commercial opportunity language until live channel scans are refreshed</li>
+                <li>❌ Blocked: Therapeutic efficacy or treatment claims without regulatory review</li>
               </ul>
             </div>
           </div>

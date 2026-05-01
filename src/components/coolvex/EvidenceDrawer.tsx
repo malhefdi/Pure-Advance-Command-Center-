@@ -12,6 +12,15 @@ const confidenceBadge: Record<string, string> = {
 
 export function EvidenceDrawer({ sources }: { sources: EvidenceSource[] }) {
   const [open, setOpen] = useState(false);
+
+  if (sources.length === 0) {
+    return (
+      <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-500">
+        No Coolvex evidence sources are currently loaded.
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-xl border border-gray-200 bg-white">
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition">
@@ -32,6 +41,7 @@ export function EvidenceDrawer({ sources }: { sources: EvidenceSource[] }) {
                 <div className="mt-2 text-sm text-gray-700">{s.value}</div>
                 <div className="mt-2 text-xs text-gray-500" title={s.source}>Source: {s.source.split("/").pop()}</div>
                 <div className="mt-1 text-xs text-gray-400">Modified: {s.modified}</div>
+                {s.notes && <div className="mt-2 rounded bg-white p-2 text-xs text-gray-500">{s.notes}</div>}
               </div>
             ))}
           </div>

@@ -10,6 +10,7 @@ import {
   evidenceSources,
   manufacturingQuote,
   patentInfo,
+  regulatoryCertificate,
 } from "@/lib/coolvex-epic-data";
 
 export function GET() {
@@ -24,5 +25,6 @@ export function GET() {
     evidenceSources,
     manufacturingQuote,
     patentInfo,
+    regulatoryCertificate,
   });
 }

@@ -114,17 +114,26 @@ export interface PatentInfo {
   source: string;
 }
 
+export interface RegulatoryCertificate {
+  certificateNumber: string;
+  authority: string;
+  status: string;
+  compliantWording: string;
+  scope: string;
+  source: string;
+  notes: string;
+}
+
 // ── Milestones ─────────────────────────────────────────────────
 
 export const milestones: Milestone[] = [
   { label: "Oak Park Ingredient Failed Specs", date: "Mar 2026", status: "done", icon: "❌", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
   { label: "Ingredient Procured & Paid by PA", date: "Apr 2026", status: "done", icon: "✅", owner: "Mohammed", source: "src/app/coolvex/page.tsx" },
   { label: "50% Manufacturing Payment", date: "Apr 28, 2026", status: "done", icon: "✅", owner: "Dr. Sultan", source: "src/lib/crm-seed-data.ts" },
+  { label: "SFDA Cosmetic Product Notification Certificate on File", date: "CN-2026-59889", status: "done", icon: "📋", owner: "Regulatory", source: "CN-2026-59889" },
   { label: "Oak Park Delivery to ACCMi", date: "May 4, 2026", status: "next", icon: "📦", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
-  { label: "Product Ready (1-10 days)", date: "May 5-14, 2026", status: "pending", icon: "⏳", owner: "ACCMi", source: "src/app/coolvex/page.tsx" },
-  { label: "SFDA Cosmetic Notification Filed", date: "May 2026", status: "done", icon: "📋", owner: "Dr. Sultan", source: "CN-2026-59889.pdf" },
-  { label: "SFDA Cosmetic Notification Certificate", date: "CN-2026-59889", status: "done", icon: "✅", owner: "SFDA", source: "CN-2026-59889.pdf" },
-  { label: "First Pharmacy Delivery", date: "Next release window", status: "pending", icon: "🏪", owner: "Dr. Sultan", source: "Coolvex launch plan" },
+  { label: "Finished Goods Readiness Window", date: "TBD — confirm with ACCMi", status: "pending", icon: "⏳", owner: "ACCMi", source: "ACCMi quote + manufacturing status reconciliation" },
+  { label: "Commercial Release Checklist", date: "TBD", status: "pending", icon: "🏪", owner: "Commercial / Regulatory", source: "closeout hardening" },
 ];
 
 // ── GTM Stats (reconciled with extracted data) ─────────────────
@@ -135,6 +144,7 @@ export const gtmStats: GtmStat[] = [
   { label: "Y1 Base Case", value: "10,500 units", sub: "IMS-validated", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", confidence: "verified" },
   { label: "Y1 Base Profit", value: "SAR 132,825", sub: "12.65 SAR/unit", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", confidence: "verified" },
   { label: "Riyadh Pharmacies Mapped", value: "420", sub: "7 chains", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", confidence: "verified" },
+  { label: "SFDA Notification", value: "CN-2026-59889", sub: "cosmetic product notification on file", source: "SFDA cosmetic notification certificate", confidence: "verified" },
   { label: "Manufacturing Quote", value: "SAR 51,750", sub: "5,000 units @ 9 SAR", source: "crm-seed-data.ts / intelligence-report.md", confidence: "verified" },
 ];
 
@@ -195,11 +205,11 @@ export const marketData: MarketData[] = [
 // ── Action Items ───────────────────────────────────────────────
 
 export const actionItems: ActionItem[] = [
-  { title: "Verify ACCMI SFDA registrations and GMP certifications before PO", owner: "Dr. Sultan", status: "open", due: "2026-05-05", priority: "critical", product: "Coolvex", source: "intelligence-report.md" },
+  { title: "Verify ACCMI GMP/manufacturing documentation and reconcile batch lead time before public launch date", owner: "Dr. Sultan", status: "open", due: "2026-05-05", priority: "critical", product: "Coolvex", source: "ACCMi quote + closeout audit" },
   { title: "Export Feb 2026 Coolvex competitive intelligence Google Slides", owner: "Mohammed", status: "open", due: "2026-05-01", priority: "critical", product: "Coolvex", source: "SOURCE-INVENTORY.csv" },
   { title: "Reconcile Y1 profit discrepancy (132K vs 180K-320K)", owner: "Mohammed", status: "open", due: "2026-05-01", priority: "high", product: "Coolvex", source: "enrichment audit" },
   { title: "Confirm PO terms and batch timeline with ACCMI", owner: "Dr. Sultan", status: "open", due: "2026-05-05", priority: "high", product: "Coolvex", source: "crm-seed-data.ts" },
-  { title: "Archive CN-2026-59889 and align all channel claims to cosmetic notification scope", owner: "Regulatory", status: "in-progress", due: "2026-05-10", priority: "medium", product: "Coolvex", source: "CN-2026-59889.pdf" },
+  { title: "Validate all outward claims against cosmetic notification scope before pharmacy/digital materials", owner: "Regulatory", status: "in-progress", due: "2026-05-10", priority: "medium", product: "Coolvex", source: "CN-2026-59889 + claims audit" },
   { title: "Decide launch channel order (pharmacy pilot vs Amazon/Noon/Salasa)", owner: "Dr. Sultan", status: "open", due: "2026-05-15", priority: "medium", product: "Coolvex", source: "Antigravity_MultiAgent_Plan.md" },
 ];
 
@@ -212,7 +222,7 @@ export const evidenceSources: EvidenceSource[] = [
   { claim: "Riyadh Pilot Pharmacies", value: "420 across 7 chains", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", modified: "2025-12-11", confidence: "verified" },
   { claim: "SFDA Licensed Pharmacies Total", value: "9,359 records", source: "Licensed Pharmacies List.xlsx", modified: "2025-12-17", confidence: "verified" },
   { claim: "ACCMI Manufacturing Quote", value: "5,000 units @ 9 SAR = 51,750 SAR", source: "crm-seed-data.ts / intelligence-report.md", modified: "2026-04-28", confidence: "verified" },
-  { claim: "SFDA Cosmetic Notification Certificate", value: "CN-2026-59889", source: "CN-2026-59889.pdf", modified: "2026-05-01", confidence: "verified", notes: "Cosmetic product notification for KSA market" },
+  { claim: "SFDA Cosmetic Product Notification", value: "Certificate CN-2026-59889 on file", source: "SFDA cosmetic notification certificate", modified: "2026-05-01", confidence: "verified", notes: "Use conservative wording; notification is not a therapeutic efficacy approval." },
   { claim: "Patent Application", value: "SA 1020257888 filed Oct 2025", source: "crm-seed-data.ts", modified: "2026-04-28", confidence: "verified" },
   { claim: "Rohelar Y1 Trajectory", value: "22,264 units / 500 locations", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", modified: "2025-12-11", confidence: "verified", notes: "Best Coolvex launch analog" },
   { claim: "Healarido Y2 Trajectory", value: "70,618 units / 1,170 locations", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", modified: "2025-12-11", confidence: "verified", notes: "Aggressive growth model, Al Nahdi pharmacies" },
@@ -231,8 +241,8 @@ export const manufacturingQuote: ManufacturingQuote = {
   quantity: 5000,
   unitPriceSAR: 9,
   totalPriceSAR: 51750,
-  status: "Pending PO",
-  nextAction: "Verify SFDA registrations and GMP certifications before PO",
+  status: "Quote on file",
+  nextAction: "Reconcile manufacturing lead time and GMP documentation before public launch commitments",
   source: "crm-seed-data.ts",
 };
 
@@ -246,4 +256,16 @@ export const patentInfo: PatentInfo = {
   timeline: "18-24 months from filing",
   authority: "SAIP (Saudi Authority for Intellectual Property)",
   source: "crm-seed-data.ts / intelligence-report.md",
+};
+
+// ── Regulatory Certificate ───────────────────────────────────
+
+export const regulatoryCertificate: RegulatoryCertificate = {
+  certificateNumber: "CN-2026-59889",
+  authority: "SFDA",
+  status: "Cosmetic product notification certificate on file",
+  compliantWording: "SFDA cosmetic product notification certificate on file",
+  scope: "Cosmetic notification record for Coolvex; not a therapeutic efficacy approval.",
+  source: "SFDA cosmetic notification certificate",
+  notes: "Use conservative regulatory language in all UI and deck copy.",
 };
