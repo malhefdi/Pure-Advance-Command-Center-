@@ -81,7 +81,7 @@ export const productStatus: PlatformBlockData[] = [
       {
         productId: "coolvex",
         name: "Coolvex",
-        subtitle: "Topical natural ointment — hemorrhoid/fissure treatment",
+        subtitle: "Topical ointment for intensive care of the perianal area — oak bark, zinc oxide, nanotechnology",
         platform: "med",
         stage: "mfg",
         stageLabel: "Manufacturing",
