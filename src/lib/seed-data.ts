@@ -92,7 +92,7 @@ export const productStatus: PlatformBlockData[] = [
           { label: "50% Paid", value: "Apr 28", tone: "green" },
           { label: "Ingredient", value: "May 4 delivery", tone: "blue" },
           { label: "Ready", value: "May 5-14", tone: "yellow" },
-          { label: "SFDA", value: "Pending", tone: "red" },
+          { label: "SFDA", value: "CN-2026-59889 ✓", tone: "green" },
         ],
       },
       {
