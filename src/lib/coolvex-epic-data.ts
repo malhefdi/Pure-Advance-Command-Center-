@@ -122,8 +122,8 @@ export const milestones: Milestone[] = [
   { label: "50% Manufacturing Payment", date: "Apr 28, 2026", status: "done", icon: "✅", owner: "Dr. Sultan", source: "src/lib/crm-seed-data.ts" },
   { label: "Oak Park Delivery to ACCMi", date: "May 4, 2026", status: "next", icon: "📦", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
   { label: "Product Ready (1-10 days)", date: "May 5-14, 2026", status: "pending", icon: "⏳", owner: "ACCMi", source: "src/app/coolvex/page.tsx" },
-  { label: "SFDA Application Submitted", date: "May 2026", status: "pending", icon: "📋", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
-  { label: "SFDA Certified", date: "TBD", status: "blocked", icon: "🔴", owner: "SFDA", source: "src/app/coolvex/page.tsx" },
+  { label: "SFDA Cosmetic Notification Certificate Obtained (CN-2026-59889)", date: "May 2026", status: "done", icon: "✅", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
+  { label: "SFDA Pharmacy Sale Authorization (required for pharmacy channel)", date: "TBD", status: "blocked", icon: "🔴", owner: "SFDA", source: "src/app/coolvex/page.tsx" },
   { label: "First Pharmacy Delivery", date: "TBD", status: "blocked", icon: "🏪", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
 ];
 
@@ -216,6 +216,7 @@ export const evidenceSources: EvidenceSource[] = [
   { claim: "Rohelar Y1 Trajectory", value: "22,264 units / 500 locations", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", modified: "2025-12-11", confidence: "verified", notes: "Best Coolvex launch analog" },
   { claim: "Healarido Y2 Trajectory", value: "70,618 units / 1,170 locations", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", modified: "2025-12-11", confidence: "verified", notes: "Aggressive growth model, Al Nahdi pharmacies" },
   { claim: "Competitive Intelligence Slides", value: "Feb 2026 presentation", source: "Coolvex-Competitive-Intelligence-Feb2026.gslides", modified: "2026-02-16", confidence: "unverified", notes: "Google shortcut only — needs Drive API export" },
+  { claim: "SFDA Cosmetic Notification Certificate", value: "CN-2026-59889", source: "SFDA Certificate Document (to be linked)", modified: "May 2026", confidence: "verified", notes: "Certificate for cosmetic notification allows marketing and online sale; pharmacy sale requires additional authorization" },
 ];
 
 // ── Manufacturing Quote ────────────────────────────────────────

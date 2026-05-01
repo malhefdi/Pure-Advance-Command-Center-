@@ -66,7 +66,7 @@ export default function CoolvexPage() {
             </div>
             <div className="flex flex-wrap items-center gap-2 lg:justify-end">
               <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800">Manufacturing ready</span>
-              <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">SFDA pending</span>
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">SFDA Cosmetic Notification (CN-2026-59889)</span>
               <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">{verifiedSources}/{evidenceSources.length} verified sources</span>
             </div>
           </div>
