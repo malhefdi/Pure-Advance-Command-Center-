@@ -122,9 +122,9 @@ export const milestones: Milestone[] = [
   { label: "50% Manufacturing Payment", date: "Apr 28, 2026", status: "done", icon: "✅", owner: "Dr. Sultan", source: "src/lib/crm-seed-data.ts" },
   { label: "Oak Park Delivery to ACCMi", date: "May 4, 2026", status: "next", icon: "📦", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
   { label: "Product Ready (1-10 days)", date: "May 5-14, 2026", status: "pending", icon: "⏳", owner: "ACCMi", source: "src/app/coolvex/page.tsx" },
-  { label: "SFDA Application Submitted", date: "May 2026", status: "pending", icon: "📋", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
-  { label: "SFDA Certified", date: "TBD", status: "blocked", icon: "🔴", owner: "SFDA", source: "src/app/coolvex/page.tsx" },
-  { label: "First Pharmacy Delivery", date: "TBD", status: "blocked", icon: "🏪", owner: "Dr. Sultan", source: "src/app/coolvex/page.tsx" },
+  { label: "SFDA Cosmetic Notification Filed", date: "May 2026", status: "done", icon: "📋", owner: "Dr. Sultan", source: "CN-2026-59889.pdf" },
+  { label: "SFDA Cosmetic Notification Certificate", date: "CN-2026-59889", status: "done", icon: "✅", owner: "SFDA", source: "CN-2026-59889.pdf" },
+  { label: "First Pharmacy Delivery", date: "Next release window", status: "pending", icon: "🏪", owner: "Dr. Sultan", source: "Coolvex launch plan" },
 ];
 
 // ── GTM Stats (reconciled with extracted data) ─────────────────
@@ -199,7 +199,7 @@ export const actionItems: ActionItem[] = [
   { title: "Export Feb 2026 Coolvex competitive intelligence Google Slides", owner: "Mohammed", status: "open", due: "2026-05-01", priority: "critical", product: "Coolvex", source: "SOURCE-INVENTORY.csv" },
   { title: "Reconcile Y1 profit discrepancy (132K vs 180K-320K)", owner: "Mohammed", status: "open", due: "2026-05-01", priority: "high", product: "Coolvex", source: "enrichment audit" },
   { title: "Confirm PO terms and batch timeline with ACCMI", owner: "Dr. Sultan", status: "open", due: "2026-05-05", priority: "high", product: "Coolvex", source: "crm-seed-data.ts" },
-  { title: "Validate claims language against SFDA cosmetic regulations", owner: "Regulatory", status: "open", due: "2026-05-10", priority: "medium", product: "Coolvex", source: "KSA Hemorrhoid Market Analysis.md" },
+  { title: "Archive CN-2026-59889 and align all channel claims to cosmetic notification scope", owner: "Regulatory", status: "in-progress", due: "2026-05-10", priority: "medium", product: "Coolvex", source: "CN-2026-59889.pdf" },
   { title: "Decide launch channel order (pharmacy pilot vs Amazon/Noon/Salasa)", owner: "Dr. Sultan", status: "open", due: "2026-05-15", priority: "medium", product: "Coolvex", source: "Antigravity_MultiAgent_Plan.md" },
 ];
 
@@ -212,6 +212,7 @@ export const evidenceSources: EvidenceSource[] = [
   { claim: "Riyadh Pilot Pharmacies", value: "420 across 7 chains", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", modified: "2025-12-11", confidence: "verified" },
   { claim: "SFDA Licensed Pharmacies Total", value: "9,359 records", source: "Licensed Pharmacies List.xlsx", modified: "2025-12-17", confidence: "verified" },
   { claim: "ACCMI Manufacturing Quote", value: "5,000 units @ 9 SAR = 51,750 SAR", source: "crm-seed-data.ts / intelligence-report.md", modified: "2026-04-28", confidence: "verified" },
+  { claim: "SFDA Cosmetic Notification Certificate", value: "CN-2026-59889", source: "CN-2026-59889.pdf", modified: "2026-05-01", confidence: "verified", notes: "Cosmetic product notification for KSA market" },
   { claim: "Patent Application", value: "SA 1020257888 filed Oct 2025", source: "crm-seed-data.ts", modified: "2026-04-28", confidence: "verified" },
   { claim: "Rohelar Y1 Trajectory", value: "22,264 units / 500 locations", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", modified: "2025-12-11", confidence: "verified", notes: "Best Coolvex launch analog" },
   { claim: "Healarido Y2 Trajectory", value: "70,618 units / 1,170 locations", source: "Coolvex_Y1_Target_Dashboard_2.xlsx", modified: "2025-12-11", confidence: "verified", notes: "Aggressive growth model, Al Nahdi pharmacies" },

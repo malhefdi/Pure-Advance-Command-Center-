@@ -60,13 +60,13 @@ export default function CoolvexPage() {
               <div className="text-xs font-semibold uppercase tracking-[0.22em] text-purple-700">Phase 4 executive cockpit</div>
               <h1 className="text-2xl font-bold text-brand-navy sm:text-3xl">Coolvex™ Dashboard</h1>
               <p className="text-sm leading-6 text-text-muted sm:text-base">
-                Topical natural ointment — hemorrhoid/fissure treatment. Built for investor and operator review with
+                Topical natural ointment in the cosmetics channel — built for investor and operator review with
                 evidence confidence, channel readiness, and next-action ownership visible above the fold.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2 lg:justify-end">
-              <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800">Manufacturing ready</span>
-              <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">SFDA pending</span>
+              <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">Manufacturing ready</span>
+              <span className="rounded-full bg-teal-100 px-3 py-1 text-xs font-medium text-teal-800">SFDA cosmetic notification: CN-2026-59889</span>
               <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800">{verifiedSources}/{evidenceSources.length} verified sources</span>
             </div>
           </div>
