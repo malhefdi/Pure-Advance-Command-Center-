@@ -93,6 +93,7 @@ export const productStatus: PlatformBlockData[] = [
           { label: "Ingredient", value: "May 4 delivery", tone: "blue" },
           { label: "Ready", value: "May 5-14", tone: "yellow" },
           { label: "SFDA", value: "CN-2026-59889 ✓", tone: "green" },
+          { label: "Manufacturer", value: "ACCMi — 5K units quoted", tone: "blue" },
         ],
       },
       {

@@ -13,6 +13,7 @@ import {
   evidenceSources,
   manufacturingQuote,
   patentInfo,
+  regulatoryCertificate,
 } from "@/lib/coolvex-epic-data";
 import { EvidenceMetricCard } from "@/components/coolvex/EvidenceMetricCard";
 import { ScenarioCard } from "@/components/coolvex/ScenarioCard";
@@ -120,7 +121,7 @@ export default function CoolvexPage() {
             </div>
 
             {/* Manufacturing + Patent */}
-            <ManufacturingReadiness quote={manufacturingQuote} patent={patentInfo} />
+            <ManufacturingReadiness quote={manufacturingQuote} patent={patentInfo} certificate={regulatoryCertificate} />
 
             {/* Quick Actions */}
             <div className="rounded-xl border border-red-200 bg-red-50 p-4">

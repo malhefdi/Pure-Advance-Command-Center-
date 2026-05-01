@@ -247,3 +247,27 @@ export const patentInfo: PatentInfo = {
   authority: "SAIP (Saudi Authority for Intellectual Property)",
   source: "crm-seed-data.ts / intelligence-report.md",
 };
+
+export interface RegulatoryCertificate {
+  certificateNumber: string;
+  product: string;
+  type: string;
+  status: string;
+  issuedDate: string;
+  authority: string;
+  source: string;
+  compliantWording: string;
+  scope: string;
+}
+
+export const regulatoryCertificate: RegulatoryCertificate = {
+  certificateNumber: "CN-2026-59889",
+  product: "Coolvex",
+  type: "Cosmetic Product Notification",
+  status: "Certified",
+  issuedDate: "2026",
+  authority: "SFDA (Saudi Food and Drug Authority)",
+  source: "CN-2026-59889.pdf",
+  compliantWording: "SFDA cosmetic product notification certificate on file",
+  scope: "Notification certificate for marketing in KSA — does not imply therapeutic approval",
+};
