@@ -21,6 +21,14 @@ export function ActionLane({ items }: { items: ActionItem[] }) {
     const order = { critical: 0, high: 1, medium: 2, low: 3 };
     return (order[a.priority] ?? 9) - (order[b.priority] ?? 9);
   });
+  if (sorted.length === 0) {
+    return (
+      <div className="rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-500">
+        No Coolvex action items are currently loaded.
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-2">
       {sorted.map((item, i) => (

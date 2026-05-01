@@ -1,10 +1,18 @@
 "use client";
 
-import type { ManufacturingQuote, PatentInfo } from "@/lib/coolvex-epic-data";
+import type { ManufacturingQuote, PatentInfo, RegulatoryCertificate } from "@/lib/coolvex-epic-data";
 
-export function ManufacturingReadiness({ quote, patent }: { quote: ManufacturingQuote; patent: PatentInfo }) {
+export function ManufacturingReadiness({
+  quote,
+  patent,
+  certificate,
+}: {
+  quote: ManufacturingQuote;
+  patent: PatentInfo;
+  certificate: RegulatoryCertificate;
+}) {
   return (
-    <div className="grid md:grid-cols-2 gap-4">
+    <div className="grid gap-4 lg:grid-cols-3">
       <div className="rounded-xl border border-gray-200 bg-white p-4 space-y-3">
         <div className="text-xs uppercase tracking-wide text-gray-400">Manufacturing</div>
         <div className="text-lg font-bold text-gray-900">{quote.partner.split("(")[0].trim()}</div>
@@ -25,6 +33,17 @@ export function ManufacturingReadiness({ quote, patent }: { quote: Manufacturing
           <div><span className="text-gray-500">Timeline:</span> <strong>{patent.timeline}</strong></div>
           <div><span className="text-gray-500">Authority:</span> <strong>{patent.authority.split("(")[0].trim()}</strong></div>
         </div>
+        <div className="rounded-lg bg-amber-50 p-2 text-xs text-amber-700">Patent application is pending; do not describe as granted patent protection.</div>
+      </div>
+      <div className="rounded-xl border border-teal-200 bg-teal-50 p-4 space-y-3">
+        <div className="text-xs uppercase tracking-wide text-teal-600">Regulatory</div>
+        <div className="text-lg font-bold text-gray-900">{certificate.certificateNumber}</div>
+        <div className="space-y-2 text-sm">
+          <div><span className="text-gray-500">Authority:</span> <strong>{certificate.authority}</strong></div>
+          <div><span className="text-gray-500">Status:</span> <strong className="text-teal-700">{certificate.status}</strong></div>
+          <div><span className="text-gray-500">Deck wording:</span> <strong>{certificate.compliantWording}</strong></div>
+        </div>
+        <div className="rounded-lg bg-white/75 p-2 text-xs text-teal-800">{certificate.scope}</div>
       </div>
     </div>
   );
