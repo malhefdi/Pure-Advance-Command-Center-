@@ -58,6 +58,8 @@ export interface PharmacyData {
   region: string;
   count: number;
   chains?: string[];
+  verified?: boolean;
+  source?: string;
 }
 
 export interface MarketData {
@@ -163,7 +165,7 @@ export const y1Scenarios: Y1Scenario[] = [
 // ── Pharmacy Data (from SFDA Licensed Pharmacies List) ─────────
 
 export const pharmacyData: PharmacyData[] = [
-  { city: "الرياض", cityEn: "Riyadh", region: "الرياض", count: 2402, chains: ["LEMON (135)", "Innova (88)", "Zahrat (76)", "Shams (33)", "Orange (33)", "Al Jazea (32)", "Adam (23)"] },
+  { city: "الرياض", cityEn: "Riyadh", region: "الرياض", count: 2402, chains: ["LEMON (135)", "Innova (88)", "Zahrat (76)", "Shams (33)", "Orange (33)", "Al Jazea (32)", "Adam (23)"], verified: true, source: "SFDA Licensed Pharmacies List Dec 2025" },
   { city: "جدة", cityEn: "Jeddah", region: "جدة", count: 1091 },
   { city: "مكة المكرمة", cityEn: "Makkah", region: "مكة المكرمة", count: 548 },
   { city: "المدينة المنورة", cityEn: "Madinah", region: "المدينة المنورة", count: 389 },
